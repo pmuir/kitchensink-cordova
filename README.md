@@ -34,13 +34,20 @@ iOS Build
  * A provisioning profile for each device you plan to test with
 
 ### Building the App for the Simulator
-Once you have cloned the repo, it is time to start the build process. First, we will look at building the app for the
-iOS Simulator. This should be very simple. Just open Xcode, then select File -> Open, then browse to the
-`<repo-folder>/ios/KitchensinkCordova` folder and select the KitchensinkCordova.xcodeproj file. Click Open and you
-should see the project in XCode. If the `www` folder is not visible in the project or appears broken, that means your
-OS was unable to create the symbolic link from the file in the repo. If it is there but XCode shows it as missing or
-broken, all you have to do is create the symbolic link. Now you can just open Terminal, navigate to the
-`<repo-folder>/ios/KitchensinkCordova` folder and then create the link like this:
+First, we will look at building the app for the iOS Simulator. Once you have cloned the repo, it is time to start the
+build process. In order to build a Cordova iOS app, you need to install CordovaLib, Cordova Framework and Cordova
+XCode templates. At this time, there is not a pre-built installer so it must be built from source before it can be
+installed. Go to <https://github.com/apache/incubator-cordova-ios>, click the Tags link and download the latest release
+which at this time is 1.5.0. Unzip the file to a known location, then follow the instructions
+[here](https://github.com/apache/incubator-cordova-ios) under the section titled "Build and install the Installer
+Package".
+
+Next, just open Xcode, then select File -> Open, then browse to the `<repo-folder>/ios/KitchensinkCordova`
+folder and select the KitchensinkCordova.xcodeproj file. Click Open and you should see the project in XCode. If the
+`www` folder is not visible in the project or appears broken, that means your OS was unable to create the symbolic
+link from the file in the repo. If it is there but XCode shows it as missing or broken, all you have to do is create the
+symbolic link. Now you can just open Terminal, navigate to the `<repo-folder>/ios/KitchensinkCordova` folder and then
+create the link like this:
 
 	ln -s <full-path-to-your-repo>/shared/www www
 
