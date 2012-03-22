@@ -1,5 +1,7 @@
-AeroGear Cordova Kitchensink Quickstart (WORK IN PROGRESS)
+AeroGear Cordova Kitchensink Quickstart
 =======================================
+(WORK IN PROGRESS)
+==================
 Author: Kris Borchers
 
 Summary
