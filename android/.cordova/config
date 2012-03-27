@@ -1,5 +1,5 @@
 VERSION=1.5.0
 PROJECT_PATH=/Users/krisborchers/git-repo/kitchensink-cordova/android
-PACKAGE=org.jboss.aerogear.KitchensinkCordova
+PACKAGE=org.jboss.aerogear
 ACTIVITY=KitchensinkCordova
-TARGET=4
+TARGET=6

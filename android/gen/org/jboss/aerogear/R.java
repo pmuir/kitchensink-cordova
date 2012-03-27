@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package org.jboss.aerogear.KitchensinkCordova;
+package org.jboss.aerogear;
 
 public final class R {
     public static final class attr {

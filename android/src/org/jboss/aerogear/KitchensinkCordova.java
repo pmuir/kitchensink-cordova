@@ -1,4 +1,4 @@
-package __ID__;
+package org.jboss.aerogear;
 
 import android.app.Activity;
 import android.os.Bundle;
