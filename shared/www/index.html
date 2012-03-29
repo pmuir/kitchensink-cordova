@@ -81,8 +81,6 @@
                 $("#deviceInfo").append("<div><strong>Current Network Connection State:</strong></div><div>" + states[networkState] + "</div>");
             });
 
-            //scrolling support for devices that don't support overflow:auto
-            touchScrollX('#members');
         });
     </script>
 </head>
@@ -111,6 +109,7 @@
                     <p>You have successfully deployed a Java EE 6 web application.</p>
                     <h3>Your application can run on:</h3>
                     <img src="img/dualbrand_as7eap.png" class="max-width-100"/>
+
                     <ul id="features">
                         <li class="feature">Pure HTML client</li>
                         <li class="feature">JAX-RS GET &amp; POST end points</li>
@@ -195,7 +194,7 @@
             <!-- New HTML5 article tag -->
             <article id="member-art" data-role="page" data-theme="a">
                 <!-- Header -->
-                <div data-role="header" class="header">
+                <div data-role="header" class="header" data-position="fixed">
                     <img class="header_logo" src="img/icon_medium.png"/>
                     <h3>AeroGear Quickstart</h3>
                     <a href="#info-aside" data-role="button" data-icon="info" class="ui-btn-right" data-iconpos="notext" data-rel="dialog"></a>
