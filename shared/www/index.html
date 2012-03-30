@@ -66,8 +66,20 @@
                 $('span.success').remove();
             });
 
+            $("#memberRefreshButton").click(function(event) {
+                updateMemberTable();
+            });
+
+            $("#connectionRefreshButton").click(function(event) {
+                updateConnectionType();
+            });
+
             //Show device info on member registration page
             document.addEventListener("deviceready", function() {
+                updateConnectionType();
+            });
+
+            function updateConnectionType() {
                 var networkState = navigator.network.connection.type;
                                       
                 var states = {};
@@ -78,9 +90,8 @@
                 states[Connection.CELL_3G]  = 'Cell 3G connection';
                 states[Connection.CELL_4G]  = 'Cell 4G connection';
                 states[Connection.NONE]     = 'No network connection';
-                $("#deviceInfo").append("<div><strong>Current Network Connection State:</strong></div><div>" + states[networkState] + "</div>");
-            });
-
+                $("#deviceInfo").html(states[networkState]);
+            }
         });
     </script>
 </head>
@@ -150,10 +161,14 @@
 
                 <div data-role="content">
                     <p class="desktop-only">Enforces client side validation with HTML5 based constraints that match the annotation-based constraints defined on the model class. Also uses new HTML5 attributes such as placeholder, and autofocus.</p>
-                    <div id="deviceInfo"></div>
+                    <div>
+                        <a id="connectionRefreshButton" data-role="button" data-icon="refresh" data-iconpos="notext">Refresh Connection Status</a>
+                        <div><strong>Current Network Connection State: </strong></div>
+                        <div id="deviceInfo"></div>
+                    </div>
 
                     <!-- For now mapping bean validation constraints from server side model is a manual task -->
-                    <form name="reg" id="reg" data-ajax="false">
+                    <form name="reg" id="reg" data-ajax="false" style="clear: left;">
                         <fieldset>
                             <legend>Register a user:</legend>
                             <div>
@@ -204,7 +219,7 @@
 
                 <div data-role="content">
                     <p class="desktop-only">This table is populated and constructed using restful GET calls to the server, and uses CSS3 based selectors for styling. When the page is requested jQuery is used to send the JAX-RS request for the current list of members. The table is them populated dynamically using JavaScript. See app.js for more details.</p>
-
+                    <button id="memberRefreshButton" data-role="button" data-inline="true" data-icon="refresh">Refresh Members</button>
                     <table class="simpletablestyle" id="mem_tbl" class="rt cf">
                         <thead class="cf">
                             <tr>
