@@ -21,7 +21,7 @@
 //  MainViewController.h
 //  KitchensinkCordova
 //
-//  Created by Kathi Borchers on 3/21/12.
+//  Created by Kris Borchers on 4/24/12.
 //  Copyright __MyCompanyName__ 2012. All rights reserved.
 //
 
