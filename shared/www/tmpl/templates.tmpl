@@ -1,0 +1,26 @@
+<script type="text/template" id="member-tmpl">
+<% _.each(members, function(member) { %>
+    <tr class="columnNames">
+        <td>Id</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Phone #</td>
+        <td>REST URL</td>
+        <td class="contactCell">Add to Contacts</td>
+    </tr>
+    <tr class="member">
+        <td><%=member.id%></td>
+        <td><%=member.name%></td>
+        <td><%=member.email%></td>
+        <td><%=member.phoneNumber%></td>
+        <td><a href="rest/members/<%=member.id%>" rel="external" target="_blank" class="resturl ui-link">JSON</a></td>
+        <td class="contactCell"><button class="addContactButton" data-cname="<%=member.name%>" data-cemail="<%=member.email%>" data-cphone="<%=member.phoneNumber%>" data-icon="plus" data-inline="true">Add Me</button></td>
+    </tr>
+<% }); %>
+</script>
+
+<script type="text/template" id="contact-tmpl">
+<% _.each(contacts, function(contact) { %>
+    <li><a href="#" data-display-name="<%= contact.displayName ? contact.displayName : "" %>" data-email="<%= contact.emails ? contact.emails[0].value : "" %>" data-phone="<%= contact.phoneNumbers ? contact.phoneNumbers[0].value.replace( /[\-\(\)\s]/g, "" ) : "" %>" class="contact-link"><%= contact.displayName %></a></li>
+<% }); %>
+</script>

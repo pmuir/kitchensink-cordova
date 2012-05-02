@@ -166,6 +166,10 @@ span.success {
    padding-right: 5px;
 }
 
+.ui-listview li {
+	padding: 15px 0;
+}
+
 /* Member table styles */
 #mem_tbl {
    clear: both;
@@ -214,7 +218,7 @@ span.success {
 }
 
 /*responsive design for tables*/
-@media only screen and (max-width: 40em) { /*640*/
+@media only screen and (max-width: 640px) {
 
     #members tr {
         background: #ffffff;
@@ -275,6 +279,12 @@ span.success {
         bottom: -15px;
         left: 60px;
     }
+    
+    #members .ui-btn {
+        margin-top: -3px;
+        position: absolute;
+        left: 100px;
+    }
 }
 
 #deviceInfo {
@@ -286,3 +296,6 @@ span.success {
 	margin-right: 10px;
 }
 
+.contactListContent {
+	padding-top: 25px;
+}

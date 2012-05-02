@@ -22,7 +22,7 @@ Restful calls, validates return values, and populates the member table.
 /* Get the member template */
 function getMemberTemplate() {
     $.ajax({
-        url: "tmpl/member.tmpl",
+        url: "tmpl/templates.tmpl",
         dataType: "html",
         success: function( data ) {
             $( "head" ).append( data );
@@ -37,12 +37,20 @@ function buildMemberRows(members) {
 }
 
 /* Uses JAX-RS GET to retrieve current member list */
-function updateMemberTable() {
+function updateMemberTable( manual ) {
     $.ajax({
         url: "http://poh5-aerogear.rhcloud.com/rest/members",
         cache: false,
         success: function(data) {
-            $('#members').empty().append(buildMemberRows(data));
+        	var members = $( "#members" );
+            members.html(buildMemberRows(data));
+            if ( manual ) {
+            	if ( navigator.contacts ) {
+            		members.find( "button" ).button();
+            	} else {
+            		$( ".contactCell" ).remove();
+            	}
+            }
         },
         error: function(error) {
             //console.log("error updating table -" + error.status);
@@ -93,3 +101,127 @@ function registerMember(memberData) {
         }
     });
 }
+
+// Initialize application
+$( document ).ready( function() {
+    //Fetches the initial member data and populates the table using jquery templates
+    getMemberTemplate();
+
+    //Register an event listener on the sumbit action
+    $('#reg').submit(function(event) {
+        event.preventDefault();
+
+        var memberData = $(this).serializeObject();
+        //Workaround for jQM adding a hidden field for submit buttons which then
+        //gets serialized into the form values
+        if ( memberData.register ) {
+            delete memberData.register;
+        }
+        registerMember(memberData);
+    });
+
+    //Register the cancel listener
+    $('#cancel').click(function(event) {
+        //clear input fields
+        $('#reg')[0].reset();
+
+        //clear existing msgs
+        $('span.invalid').remove();
+        $('span.success').remove();
+    });
+
+    $("#memberRefreshButton").click(function(event) {
+        updateMemberTable( true );
+    });
+
+    document.addEventListener( "deviceready", function() {
+        //verify access to contacts
+        if ( navigator.contacts ) {
+            //fetch users contacts and populate page in background
+            navigator.contacts.find(
+                [ "displayName", "phoneNumbers", "emails" ],
+                function( data ) {
+                    var list = $( "#contactList" );
+                    list.html( _.template( $("#contact-tmpl").html(), { contacts: data } ) );
+                },
+                function( error ) {
+                    alert( error );
+                },
+                { multiple: true }
+            );
+
+	        //opens a list of contacts from the device
+            $( "#contactSelectButton" ).click( function( event ) {
+            	$.mobile.changePage( "#contactPage", { transition: "pop" } );
+            });
+
+            //add a member to your contacts
+            $( "#contactPage" ).on( "click", ".contact-link", function( event ) {
+                event.preventDefault();
+
+                var target = $( event.target );
+                $( "#name" ).val( target.data( "display-name" ) );
+                $( "#email" ).val( target.data( "email" ) );
+                $( "#phoneNumber" ).val( target.data( "phone" ) );
+
+                $.mobile.changePage( "#register-art", { direction: "reverse" } );
+            })
+            .on( "pagebeforeshow", function( event ) {
+                $( "#contactList" ).listview( "refresh" );
+            });
+            
+            //Add member to contacts
+            $( "#members" ).on( "click", ".addContactButton", function( event ) {
+            	var target = $( event.target );
+            	navigator.notification.confirm(
+            		"Are you sure you want to add " + target.data( "cname" ) + " to your contacts?",
+            		function( button ) {
+            			if ( button == 1 ) {
+                            var contact = navigator.contacts.create(),
+                                name = new ContactName(),
+                                names = target.data( "cname" ).split( " " );
+    	            		contact.displayName = target.data( "cname" );
+                            contact.nickname = target.data( "cname" );
+                            name.formatted = target.data( "cname" );
+                            if ( names.length > 1 ) {
+                            	name.familyName = names[1];
+                            	name.givenName = names[0];
+                            }
+                            contact.name = name;
+    	            		contact.emails = [ new ContactField( "home", target.data( "cemail" ), true ) ];
+                            contact.phoneNumbers = [ new ContactField( "home", target.data( "cphone" ).toString(), true ) ];
+
+            				contact.save(
+                                function( contact ) {
+                                    navigator.notification.alert( contact.nickname + " has been added to your contacts.", function(){} );
+                                },
+                                function( contactError ) {
+                                    navigator.notification.alert( JSON.stringify(contactError), function(){} );
+                                }
+                            );
+            			}
+            		}
+            	);
+            });
+        } else {
+            $( "#contactSelectButton, .contactCell" ).remove();
+        }
+    }, false );
+});
+
+//Serialize a form to an object
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
